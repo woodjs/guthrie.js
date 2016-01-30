@@ -1,9 +1,11 @@
 {
   "name": "guthrie-js",
   "description": "A Node.js MVC framework built on Express.js, inspired by Microsoft's ASP.NET MVC.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Dominic Pettifer <sironfoot@gmail.com>",
-  "contributors": ["bugong <1761869346@qq.com>"],
+  "contributors": [
+    "bugong <1761869346@qq.com>"
+  ],
   "keywords": [
     "guthrie",
     "mvc",
@@ -35,5 +37,14 @@
     "url": "git://github.com/woodjs/guthrie.js.git"
   },
   "license": "MIT",
-  "main": "index"
+  "main": "index",
+  "bugs": {
+    "url": "https://github.com/woodjs/guthrie.js/issues"
+  },
+  "homepage": "https://github.com/woodjs/guthrie.js#readme",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  }
 }
