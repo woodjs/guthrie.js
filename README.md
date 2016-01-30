@@ -1,26 +1,31 @@
 guthrie.js
 ==========
 
-A Node.js MVC framework built on Express.js, inspired by Microsoft's ASP.NET MVC.
+原作者：Dominic Pettifer &lt;sironfoot@gmail.com&gt;
 
-Guthrie organises your code into controllers and actions and supports filters and events. You can think of a controller
-as nouns for something (product, category, order) and actions as verbs (show, edit, remove).
+原框架地址：https://github.com/Sironfoot/guthrie.js
+
+guthrie.js是一个构建在express框架之上的Node.js MVC框架，其灵感来源于微软的ASP.NET MVC。
+
+guthrie框架将你的代码组织到controllers、actions中，支持filters和events功能。你可以认为controller是某物体的名称（如product， category， order等），actions则是一系列动作（如show，edit， remove等）。
+
 
 ## Installation
 
     $ npm install express
-    $ npm install guthrie
+    $ npm install guthrie-js
+
 
 ## Quick Start
 
-Add it to an existing Express.js app:
+将guthrie添加到一个已存在express应用程序
 
 ````javascript
 var express = require('express');
-var gu = require('guthrie');
+var gu = require('guthrie-js');
 
 var app = express();
-//... insert middleware
+//... 插入中间件函数
 app.use(app.router);
 
 var router = new gu.Router(app, __dirname);
@@ -38,15 +43,12 @@ router.mapRoute('/product/:id/:name', {
 http.createServer(app).listen(3000);
 ````
 
-This will create routes for two controllers, 'home' and 'product'. Each can have one
-or more 'actions'. For instance, we have mapped the '/' path to the 'home' controller and the 'index' action.
+上面的代码可以将路由映射到home和product这两个控制器上。每个控制器可以有一个或多个'actions'。如上面的示例，我们已经将路径'/'映射到控制器(controller)home上的动作(action)index。
 
-By convension, controllers must appear in the '/controllers' directory in your app's
-root directory, and the file name must be affixed with 'Controller.js'. So lets create a 'homeController.js' file in the
-'/controllers' directory.
+根据惯例，controllers必须放置在你项目根路径下的'/controllers'文件夹内，而且每个控制器文件必须以'Controller.js'为后缀命名。所以，让我们在'/controllers'文件夹下创建一个'homeController.js'文件。
 
 ````javascript
-var gu = require('guthrie');
+var gu = require('guthrie-js');
 
 var homeController = gu.controller.create();
 homeController.actions = {
@@ -62,36 +64,34 @@ homeController.actions = {
 module.exports = homeController;
 ````
 
-res.view() is a helper method that works the same as res.render(), except it assumes the view is located in
-'/views/controllerName/actionName'. So in our above example, it will look for '/views/home/index.html'.
+res.view()是一个guthrie框架扩展的函数，其功能基本和res.render()一样，不同之处在于，res.view()会假定该controller对应的view视图位于'/views/controllerName/actionName'。所以，我们上面的例子，res.view()会按照'/views/home/index.html'这个路径来寻找对应的view视图。
 
-We're also creating a GET function for a GET request, but POST, PUT, and DELETE are also supported.
+上面的例子，我们为GET请求创建了一个GET方法来对请求作出处理。guthrie框架同样支持POST、PUT、DELETE类型的请求。
+
 
 ## More on Routes
 
-When defining routes you can include the controller and action as parameters within the route itself:
+当定义路由时，你可以将controller和action作为参数包含在路由中:
 
     router.mapRoute('/product/:action/:id', { controller: 'product' });
 
-So the URL '/product/edit/123' will match the 'product' controller and the 'edit' action. In fact the pattern
-'/controller/action/id' is a common one so you can simply define one route to cover all your controllers/actions with:
+如上，URL'/product/edit/123'将匹配'product' controller和'edit' action。实际开发中，表达式'/controller/action/id'是一个很常用的模式，所有你可以通过下面的代码来覆盖所有'controllers/actions'模式的路径:
 
     router.mapRoute('/:controller/:action?/:id?');
 
-Notice the question mark on action indicating that it's optional. The action name will default to 'index', so the
-URL '/product' will map to the 'index' action in the 'product' controller.
+注意，上面代码中'?'，代表action和id为可选项。guthrie框架中，action的默认值为'index'，所以，如果你没有明确指定action，URL '/product'将映射到'product' controller的'index' action上。
 
-**WARNING**: By default, express(1) puts the router middleware before the static middleware, so the above route will
-match all your scripts and stylesheets, so remember to change the order:
+**警告**:默认情况下， express(1)会将路由中间件放置在静态文件（static）中间件前面。因此，上面的路由会匹配你的前端脚本和样式表，所以记得改变一下次序:
 
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(app.router);
 
-## Action Filters
 
-Action Filters provide reusable functionality for common tasks (checking authorisation for instance).
-They can be placed on controllers and will run for all actions in that controller, or on individual
-actions. To place on a controller:
+## action Filters
+
+Action Filters为常见的工作（例如：检测是否授权）提供了可重用的功能。filters可被放置在controllers上，来为controller上所有actions或个别actions服务。
+
+将filters放置在controller上:
 
 ````javascript
 var accountController = gu.controller.create({
@@ -99,7 +99,7 @@ var accountController = gu.controller.create({
 });
 ````
 
-To place on an individual action:
+将filters放置在个别action上:
 
 ````javascript
 var accountController = gu.controller.create();
@@ -123,7 +123,7 @@ accountController.actions = {
 };
 ````
 
-Lets look at the implentation for 'mustBeLoggedIn':
+让我们看看对'mustBeLoggedIn'的实现:
 
 ````javascript
 exports.mustBeLoggedIn = function(req, res, next) {
@@ -137,23 +137,20 @@ exports.mustBeLoggedIn = function(req, res, next) {
 };
 ````
 
-Filters work just like connect middleware. You can define multiple filters per controller and action.
-They will be executed in series and before any actions are run. Because they are called one after the other,
-you must remember to call the next() function to indicate that the next filter should run, unless you want to
-stop processing at that point and send a result to the browser (see the res.redirect() example above).
+Filters的工作方式类似于connect中间件。你可以为每个controller和action定义多个filters。filters将会在任何actions执行之前按顺序依次执行。
+因为，它们一个一个的按次序被调用，你必须记得调用next()来表明下一个filter应当被执行，除非你自己想停止继续向后执行，从而可以立刻向浏览器发送结果（参考上面的res.redirect()）。
 
 
 ## Events
 
-Controllers support 4 standard events:
+Controllers支持四种标准的事件:
 
-* actionExecuting - called before any action is executed
-* actionExecuted - called after any action is executed
-* resultExecuting - called before the result is executed
-* resultExecuted - called after the result is executed
+* actionExecuting - 在action执行之前被调用
+* actionExecuted - 在action执行之后被调用
+* resultExecuting -  在result执行之前被调用
+* resultExecuted - 在result执行之后被调用
 
-A 'result' is defined as any method on the HttpResponse object that sends a result to the browser,
-for instance res.end(), res.render(), res.view(), res.redirect() etc.
+'result'指的是HttpResponse对象上任何向浏览器发送结果的方法，例如：res.end()，res.render()，res.view()，res.redirect()等。
 
 ````javascript
 var homeController = gu.controller.create();
@@ -164,12 +161,12 @@ homeController.on('actionExecuting', function(req, res, next) {
 });
 ````
 
-Like Filters, Events also behave like Connect middleware and are called in series, so remember to call next().
+类似Filters，Events的工作方式同样类似于connect中间件，各函数依次被调用，所以，记得调用next()。
 
 
 ## Controller Inheritance
 
-You can create a base controller, and have all other controllers inherit from it.
+你可以创建一个base controller，然后让所有其它的controllers继承它。
 
 ````javascript
 var baseController = new gu.controller.create();
@@ -184,11 +181,8 @@ var homeController = new gu.controller.inherit(baseController, {
 });
 ````
 
-Controller inheritance is useful for defining Events and Filters that run for all controllers/actions in the
-application. For instance, it's common for a web app to have a base/root layout template (or partial views) that contains
-some form of database derived html output repeated for every page in the website. An ecommerce app might have a list of
-categories on the left side in every page for instance. Rather than repeat the categories data access code in every action,
-you could put it in the base controller:
+Controller继承机制，可以让你定义Events和Filters，然后让它们为应用程序中所有controllers/actions服务。例如，一个web应用通常都有一个base/root布局模板（或partial views），
+它被包含在网站中的各个页面中，该base/root布局模板（或partial views）有一些通用的业务逻辑，与其在每个不同的action中处理同样的业务逻辑，不如将这些通用的业务逻辑放置在base controller中:
 
 ````javascript
 var baseController = new gu.controller.create();
@@ -205,8 +199,8 @@ baseController.on('actionExecuting', function(req, res, next) {
 module.exports = baseController;
 ````
 
-If you ensure every controller inherits from base controller, every template in the web application
-will have a categories property pre-populated.
+如果你确保每个controller都继承自base controller，那么该web应用程序中的每个模板在渲染之前都会有个categories属性。
+
 
 ## Areas
 
