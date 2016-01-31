@@ -87,7 +87,7 @@ res.view()是一个guthrie框架扩展的函数，其功能基本和res.render()
     app.use(app.router);
 
 
-## action Filters
+## Action Filters
 
 Action Filters为通用的工作（例如:检测用户是否登录）,提供了复用的功能。filters可被放置在controllers上，来为controller上所有actions或个别actions服务。
 
