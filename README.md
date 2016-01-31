@@ -18,7 +18,7 @@ guthrie框架将你的代码组织到controllers、actions中，支持filters和
 
 ## Quick Start
 
-将guthrie添加到一个已存在的express应用程序
+将guthrie添加到一个已存在的express应用程序中:
 
 ````javascript
 var express = require('express');
@@ -81,7 +81,7 @@ res.view()是一个guthrie框架扩展的函数，其功能基本和res.render()
 
 注意，上面代码中'?'，代表action和id为可选项。guthrie框架中，action的默认值为'index'，所以，如果你没有明确指定action，URL '/product'将映射到'product' controller的'index' action上。
 
-**警告:**默认情况下， express(1)会将路由中间件放置在静态文件（static）中间件前面。因此，上面的路由会匹配你的前端脚本和样式表，所以记得改变一下次序:
+**警告:** 默认情况下， express(1)会将路由中间件放置在静态文件（static）中间件前面。因此，上面的路由会匹配你的前端脚本和样式表，所以记得改变一下次序:
 
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(app.router);
@@ -138,7 +138,7 @@ exports.mustBeLoggedIn = function(req, res, next) {
 ````
 
 Filters的工作方式类似于connect中间件。你可以为每个controller和action定义多个filters。filters将会在任何actions执行之前按顺序依次执行。
-因为，它们一个一个的按次序被调用，你必须记得调用next()来表明下一个filter应当被执行，除非你自己想停止继续向后执行，从而可以立刻向浏览器发送结果(参考上面的res.redirect())。
+因为，它们一个一个的按次序被调用，你必须记得调用next()来表明下一个filter应当被执行，除了你自己想停止继续向后执行，从而可以立刻向浏览器发送结果(参考上面的res.redirect())。
 
 
 ## Events
@@ -229,7 +229,7 @@ adminArea.mapRoute('/admin/:controller/:action?/:id?');
 		* controllers
 		* views
 
-controllers继续按照先前的规范继续创建。调用res.view()可以在area的'/views'文件中正确的找到对应的视图view。
+每个controller对应的文件,按照先前的规范继续创建。调用res.view()可以在area的'/views'文件中正确的找到对应的视图view。
 
 
 ## 'this' Context in Filters, Events and Actions
