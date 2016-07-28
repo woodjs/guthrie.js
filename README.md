@@ -7,6 +7,8 @@ guthrie.js
 
 guthrie.js是一个构建在express框架之上的Node.js MVC框架，其灵感来源于微软的ASP.NET MVC。
 
+**注意：** guthrie-js v0.0.4，从框架层面上开始支持generator和promise
+
 guthrie框架将你的代码组织到controllers、actions中，支持filters和events功能。你可以认为controller是某物体的名称（如product， category， order等），actions则是一系列动作（如show，edit， remove等）。
 
 
