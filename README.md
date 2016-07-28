@@ -7,7 +7,7 @@ guthrie.js
 
 guthrie.js是一个构建在express框架之上的Node.js MVC框架，其灵感来源于微软的ASP.NET MVC。
 
-**注意：** guthrie-js v0.0.4，从框架层面上开始支持generator和promise
+**注意：** guthrie-js v0.0.4，从框架层面上开始支持generator和promise。
 
 guthrie框架将你的代码组织到controllers、actions中，支持filters和events功能。你可以认为controller是某物体的名称（如product， category， order等），actions则是一系列动作（如show，edit， remove等）。
 
@@ -54,7 +54,7 @@ var gu = require('guthrie-js');
 
 var homeController = gu.controller.create();
 homeController.actions = {
-    
+
     // PATH: /
     index: {
         GET: function(req, res) {
@@ -106,18 +106,18 @@ var accountController = gu.controller.create({
 ````javascript
 var accountController = gu.controller.create();
 accountController.actions = {
-    
+
     // PATH: /account/login
     login: {
         GET: function(req, res) {
             res.view();
         }
     }
-    
+
     // PATH: /account/orders
     orders: {
         filters: [ filters.mustBeLoggedIn ],
-        
+
         GET: function(req, res) {
             res.view();
         }
@@ -129,7 +129,7 @@ accountController.actions = {
 
 ````javascript
 exports.mustBeLoggedIn = function(req, res, next) {
-    
+
     if (!res.session.loggedInUser) {
         res.redirect('/account/login');
     }
@@ -192,7 +192,7 @@ var baseController = new gu.controller.create();
 baseController.on('actionExecuting', function(req, res, next) {
     db.getCategories(function(err, categories) {
         if (err) throw err;
-    
+
         res.locals.categories = categories;
         next();
     });
@@ -255,7 +255,7 @@ homeController.actions = {
         GET: function(req, res, next) {
             console.log(this.user); // Outputs 'Scott Guthrie'
             console.log(this.clothing); // Outputs 'Red polo shirt'
-            
+
             res.end();
         }
     }
@@ -291,7 +291,7 @@ this上下文有几个非常有用的属性供你使用:
 guthrie.js is named after Scott Guthrie who is the corporate vice president of the Microsoft Developer Division. He created the original ASP.NET MVC in Februrary 2007 while flying on plane to a conference on the East Coast of the USA.
 
 
-## License 
+## License
 
 (The MIT License)
 
