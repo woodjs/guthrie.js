@@ -1,7 +1,7 @@
 {
   "name": "guthrie-js",
   "description": "A Node.js MVC framework built on Express.js, inspired by Microsoft's ASP.NET MVC.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Dominic Pettifer <sironfoot@gmail.com>",
   "contributors": [
     "bugong <1761869346@qq.com>"
